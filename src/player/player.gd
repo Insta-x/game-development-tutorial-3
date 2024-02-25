@@ -13,6 +13,7 @@ extends CharacterBody2D
 @onready var dash_input_checker: DashInputChecker = $DashInputChecker
 @onready var normal_collision_shape: CollisionShape2D = $NormalCollisionShape2D
 @onready var crouch_collision_shape: CollisionShape2D = $CrouchCollisionShape2D
+@onready var check_uncrouch_area: Area2D = $CheckUncrouchArea2D
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -94,7 +95,7 @@ func _on_crouching_state_processing(delta: float) -> void:
 
 
 func _on_crouching_state_physics_processing(delta: float) -> void:
-	if Input.is_action_just_released("crouch"):
+	if not Input.is_action_pressed("crouch") and not check_uncrouch_area.has_overlapping_bodies():
 		state_chart.send_event("ToNormal")
 	
 	_vertical_movement(delta)

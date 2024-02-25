@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://ddr4s63wfesk7"]
+[gd_scene load_steps=19 format=3 uid="uid://ddr4s63wfesk7"]
 
 [ext_resource type="Script" path="res://src/player/player.gd" id="1_g1lqd"]
 [ext_resource type="Texture2D" uid="uid://bfxkuj17kiyid" path="res://assets/kenney_platformercharacters/PNG/Player/player_tilesheet.png" id="1_i7p7y"]
@@ -8,11 +8,14 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="5_lnyp6"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="7_axphr"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_s4qxq"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ihaxr"]
 size = Vector2(50, 80)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ahsn"]
 size = Vector2(50, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s4qxq"]
+size = Vector2(50, 80)
 
 [sub_resource type="Animation" id="Animation_xhdy7"]
 length = 0.001
@@ -141,6 +144,7 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D"]
+collision_layer = 2
 script = ExtResource("1_g1lqd")
 dash_speed = 1500.0
 
@@ -152,12 +156,21 @@ vframes = 3
 
 [node name="NormalCollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -40)
-shape = SubResource("RectangleShape2D_s4qxq")
+shape = SubResource("RectangleShape2D_ihaxr")
 
 [node name="CrouchCollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -20)
 shape = SubResource("RectangleShape2D_5ahsn")
 disabled = true
+debug_color = Color(0.701961, 0, 0, 0.419608)
+
+[node name="CheckUncrouchArea2D" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CheckUncrouchArea2D"]
+position = Vector2(0, -40)
+shape = SubResource("RectangleShape2D_s4qxq")
+debug_color = Color(0, 0.176471, 0.701961, 0.419608)
 
 [node name="DashInputChecker" type="Node" parent="."]
 script = ExtResource("3_atsbl")
