@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ddr4s63wfesk7"]
+[gd_scene load_steps=18 format=3 uid="uid://ddr4s63wfesk7"]
 
 [ext_resource type="Script" path="res://src/player/player.gd" id="1_g1lqd"]
 [ext_resource type="Texture2D" uid="uid://bfxkuj17kiyid" path="res://assets/kenney_platformercharacters/PNG/Player/player_tilesheet.png" id="1_i7p7y"]
@@ -11,6 +11,135 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s4qxq"]
 size = Vector2(50, 80)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5ahsn"]
+size = Vector2(50, 40)
+
+[sub_resource type="Animation" id="Animation_xhdy7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_6lw00"]
+resource_name = "crouching"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+
+[sub_resource type="Animation" id="Animation_ny2j1"]
+resource_name = "dashing"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [19]
+}
+
+[sub_resource type="Animation" id="Animation_60up6"]
+resource_name = "idle"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_prwql"]
+resource_name = "jumping"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_hwy1l"]
+resource_name = "falling"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+
+[sub_resource type="Animation" id="Animation_t455c"]
+resource_name = "walking"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [9, 10]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_owfgb"]
+_data = {
+"RESET": SubResource("Animation_xhdy7"),
+"crouching": SubResource("Animation_6lw00"),
+"dashing": SubResource("Animation_ny2j1"),
+"falling": SubResource("Animation_hwy1l"),
+"idle": SubResource("Animation_60up6"),
+"jumping": SubResource("Animation_prwql"),
+"walking": SubResource("Animation_t455c")
+}
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_g1lqd")
 dash_speed = 1500.0
@@ -21,9 +150,14 @@ texture = ExtResource("1_i7p7y")
 hframes = 9
 vframes = 3
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="NormalCollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -40)
 shape = SubResource("RectangleShape2D_s4qxq")
+
+[node name="CrouchCollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -20)
+shape = SubResource("RectangleShape2D_5ahsn")
+disabled = true
 
 [node name="DashInputChecker" type="Node" parent="."]
 script = ExtResource("3_atsbl")
@@ -47,6 +181,11 @@ script = ExtResource("7_axphr")
 to = NodePath("../../Dashing")
 event = &"ToDashing"
 
+[node name="ToCrouching" type="Node" parent="StateChart/PlayerStates/Normal"]
+script = ExtResource("7_axphr")
+to = NodePath("../../Crouching")
+event = &"ToCrouching"
+
 [node name="Dashing" type="Node" parent="StateChart/PlayerStates"]
 script = ExtResource("5_lnyp6")
 
@@ -58,9 +197,25 @@ delay_seconds = 0.2
 [node name="Crouching" type="Node" parent="StateChart/PlayerStates"]
 script = ExtResource("5_lnyp6")
 
-[connection signal="dash_detected" from="DashInputChecker" to="." method="_on_dash_input_checker_dash_detected"]
+[node name="ToNormal" type="Node" parent="StateChart/PlayerStates/Crouching"]
+script = ExtResource("7_axphr")
+to = NodePath("../../Normal")
+event = &"ToNormal"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_owfgb")
+}
+
 [connection signal="timeout" from="DashInputChecker/ResetTimer" to="DashInputChecker" method="_on_reset_timer_timeout"]
+[connection signal="state_entered" from="StateChart/PlayerStates/Normal" to="." method="_on_normal_state_entered"]
+[connection signal="state_exited" from="StateChart/PlayerStates/Normal" to="." method="_on_normal_state_exited"]
 [connection signal="state_physics_processing" from="StateChart/PlayerStates/Normal" to="." method="_on_normal_state_physics_processing"]
+[connection signal="state_processing" from="StateChart/PlayerStates/Normal" to="." method="_on_normal_state_processing"]
 [connection signal="state_entered" from="StateChart/PlayerStates/Dashing" to="." method="_on_dashing_state_entered"]
 [connection signal="state_exited" from="StateChart/PlayerStates/Dashing" to="." method="_on_dashing_state_exited"]
 [connection signal="state_physics_processing" from="StateChart/PlayerStates/Dashing" to="." method="_on_dashing_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/PlayerStates/Crouching" to="." method="_on_crouching_state_entered"]
+[connection signal="state_exited" from="StateChart/PlayerStates/Crouching" to="." method="_on_crouching_state_exited"]
+[connection signal="state_physics_processing" from="StateChart/PlayerStates/Crouching" to="." method="_on_crouching_state_physics_processing"]
+[connection signal="state_processing" from="StateChart/PlayerStates/Crouching" to="." method="_on_crouching_state_processing"]
