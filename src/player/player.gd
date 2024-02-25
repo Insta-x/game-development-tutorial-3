@@ -12,6 +12,7 @@ extends CharacterBody2D
 var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 var can_jump_count: int = 0
+var dash_direction: DashInputChecker.Direction = DashInputChecker.Direction.NONE
 
 
 #region Normal State
@@ -37,7 +38,8 @@ func _on_normal_state_physics_processing(delta: float) -> void:
 
 #region Dashing State
 func _on_dashing_state_entered() -> void:
-	velocity.x = dash_speed
+	velocity.x = dash_speed if dash_direction == DashInputChecker.Direction.RIGHT else -dash_speed
+	velocity.y = 0
 
 
 func _on_dashing_state_physics_processing(delta: float) -> void:
@@ -47,3 +49,8 @@ func _on_dashing_state_physics_processing(delta: float) -> void:
 func _on_dashing_state_exited() -> void:
 	velocity.x = 0
 #endregion
+
+
+func _on_dash_input_checker_dash_detected(direction: DashInputChecker.Direction) -> void:
+	dash_direction = direction
+	state_chart.send_event("ToDashing")
