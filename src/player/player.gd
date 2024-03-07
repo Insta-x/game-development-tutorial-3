@@ -14,6 +14,7 @@ extends CharacterBody2D
 @onready var normal_collision_shape: CollisionShape2D = $NormalCollisionShape2D
 @onready var crouch_collision_shape: CollisionShape2D = $CrouchCollisionShape2D
 @onready var check_uncrouch_area: Area2D = $CheckUncrouchArea2D
+@onready var jump_audio: AudioStreamPlayer2D = $JumpAudio
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -119,6 +120,7 @@ func _vertical_movement(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("jump") and can_jump_count > 0:
 		velocity.y = jump_power
+		jump_audio.play()
 		can_jump_count -= 1
 
 ## Physics process helper function. NOT TO BE ACCESSED ELSEWHERE!

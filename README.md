@@ -1,7 +1,8 @@
 # Requirements
 Godot Version: 4.2.1
 
-# Features
+# Tutorial 3
+## Features
 Mengikuti tutorial, pada project ini terdapat fitur basic seperti menggerakkan karakter player secara horizontal dan vertikal. Pergerakan horizontal dengan berjalan, sedangkan vertikal dengan melompat dan jatuh. Jenis node yang digunakan adalah `CharacterBody2D` agar memberikan kontrol penuh kepada developer untuk membuat pergerakan yang lebih sesuai dan bisa melakukan tuning agak feel game lebih enak.
 
 Karena terdapat beberapa states yang akan digunakan pada project ini, saya menggunakan bantuan *addons* `Godot State Charts` yang merupakan salah satu jenis implementasi *State Machines* namun dengan sedikit modifikasi agar lebih fleksibel.
@@ -18,3 +19,16 @@ Fitur tambahan terakhir adalah menambahkan animations untuk player agar terlihat
 - `falling`, ketika player jatuh.
 - `dashing`, ketika player *dashing*.
 - `crouching`, ketika player sedang *crouching*.
+
+# Tutorial 5
+Animation player sudah menggunakan spritesheet yang dianimasikan dengan `AnimationPlayer` karena lebih flexible.
+
+Untuk objek baru, dibuat dino dengan spritesheet yang dianimasikan dengan `AnimatedSprite`. Dino akan mengeluarkan suara marah jika disentuh oleh player.
+
+Player juga mendapatkan audio baru ketika dia meloncat. Audio dibuat dengan rekaman tepuk tangan pada Audacity. Digunakan node `AudioStreamPlayer2D` untuk memainkan audionya.
+
+BGM ditaruh pada main scene dengan menggunakan node `AudioStreamPlayer` agar bisa terdengar di mana saja.
+
+# Credits
+- Dino Spritesheets: https://arks.itch.io/dino-characters by [@ScissorMarks](https://twitter.com/ScissorMarks)
+- Anger Audio : https://freesound.org/people/MATRIXXX_/sounds/527636/

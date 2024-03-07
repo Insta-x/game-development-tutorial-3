@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://cjownpiqjjiiu"]
+[gd_scene load_steps=5 format=3 uid="uid://cjownpiqjjiiu"]
 
-[ext_resource type="PackedScene" uid="uid://t3oimpsspn27" path="res://Scenes/Ground.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://t3oimpsspn27" path="res://scenes/Ground.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://ddr4s63wfesk7" path="res://src/player/player.tscn" id="2_hjlax"]
+[ext_resource type="PackedScene" uid="uid://dcgiyhc8u81u6" path="res://src/dino/animated_dino.tscn" id="3_x4knd"]
+[ext_resource type="AudioStream" uid="uid://bc42h28yawyva" path="res://assets/assets_sound_bgm.wav" id="4_qg5u7"]
 
 [node name="Root" type="Node2D"]
 
@@ -17,5 +19,12 @@ position = Vector2(225.95, 294.562)
 [node name="Ground4" parent="." instance=ExtResource("1")]
 position = Vector2(788, 162)
 
+[node name="AnimatedDino" parent="." instance=ExtResource("3_x4knd")]
+position = Vector2(346, 259)
+
 [node name="Player" parent="." instance=ExtResource("2_hjlax")]
 position = Vector2(237, 244)
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_qg5u7")
+autoplay = true
